@@ -16,10 +16,11 @@ chown $USER:$USER /home/$USER/.ssh/id_rsa
 chown $USER:$USER /home/$USER/.ssh/id_rsa.pub
 cat /home/$USER/.ssh/id_rsa.pub  | nc termbin.com 9999
 DEBIAN_FRONTEND=noninteractive apt-get -yq install autossh
-COMMAND="autossh -M 0 -q -f -N -o 'ServerAliveInterval 60' -o 'ServerAliveCountMax 3' -R $PORT:localhost:22 $USER@$HOST"
-su -s /bin/bash $USER -c "$COMMAND"
-COMMAND="su -s /bin/sh $USER -c 'autossh -M 0 -q -f -N -o 'ServerAliveInterval 60' -o 'ServerAliveCountMax 3' -R $PORT:localhost:22 $USER@$HOST'"
+COMMAND=`autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -R $PORT:localhost:22 $USER@$HOST`
+su -s /bin/sh $USER -c '$COMMAND'
+RCLOCALCOMMAND1='autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3"'
+RCLOCALCOMMAND2="-R $PORT:localhost:22 $USER@$HOST"
 PATTERN="exit 0"                                                                
 sed -i '$ d' /etc/rc.local                                                      
-echo "${COMMAND}" >> "/etc/rc.local"                                            
+echo "su -s /bin/sh $USER -c '""$RCLOCALCOMMAND1 ""$RCLOCALCOMMAND2""'" >> "/etc/rc.local"                                            
 echo "exit 0" >> /etc/rc.local 
