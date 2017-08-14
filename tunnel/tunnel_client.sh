@@ -4,7 +4,7 @@ USER=$1
 PORT=$2
 HOST=$3
 
-adduser --disabled-login --disabled-password --gecos "" --shell /sbin/nologin $USER
+adduser --disabled-login --disabled-password --gecos "" --shell /usr/sbin/nologin $USER
 
 mkdir /home/$USER/.ssh
 chmod 700 /home/$USER/.ssh
