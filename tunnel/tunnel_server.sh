@@ -19,4 +19,4 @@ chown $USER:$USER /home/$USER/.ssh/authorized_keys
 #rm $CODE
 
 # use vsftpd
-cat /home/$LOGIN/ftp/files/$USER_key >> "/home/$USER/.ssh/authorized_keys"
+cat "/home/$LOGIN/ftp/files/${USER}_key" >> "/home/${USER}/.ssh/authorized_keys"
