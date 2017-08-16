@@ -34,21 +34,22 @@ DEBIAN_FRONTEND=noninteractive apt-get -yq install autossh lftp
 # cat /home/$USER/.ssh/id_rsa.pub  | nc termbin.com 9999
 
 # use vsftpd with tls
-FILE="$USER_info"
-KEY="$USER_key"
-touch $FILE
-echo "$USER" >> $FILE
-cat /home/$USER/.ssh/id_rsa.pub >> $FILE
-echo "$PORT" >> $FILE
+FILE="${USER}_info"
+KEY="${USER}_key"
 
-touch $KEY
-cat cat /home/$USER/.ssh/id_rsa.pub >> $KEY
+echo "${FILE}"
+touch "${FILE}"
+echo "$USER" >> "${FILE}"
+cat "/home/$USER/.ssh/id_rsa.pub" >> "${FILE}"
+echo "$PORT" >> "${FILE}"
+
+echo "${KEY}"
+touch "${KEY}"
+cat "/home/$USER/.ssh/id_rsa.pub" >> "${KEY}"
 
 lftp -c "open -u $LOGIN,$PASSWORD ftp.$HOST; put -O files $FILE"
 lftp -c "open -u $LOGIN,$PASSWORD ftp.$HOST; put -O files $KEY"
 
-rm $FILE
-rm $KEY
 
 COMMAND=`autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -R $PORT:localhost:22 $USER@tunnel.$HOST`
 su -s /bin/sh $USER -c '$COMMAND'
